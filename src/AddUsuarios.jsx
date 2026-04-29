@@ -5,7 +5,7 @@ import {
   listarUsuarios,
 } from "./assets/redux/actions/usuariosActions";
 
-function FormUsuarios() {
+function AddUsuarios() {
   const dispatch = useDispatch();
   const [usuario, setUsuario] = useState({
     usuarioId: "",
@@ -90,4 +90,4 @@ function FormUsuarios() {
   );
 }
 
-export default FormUsuarios;
+export default AddUsuarios;

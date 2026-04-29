@@ -28,3 +28,13 @@ export const elimUsuarios = createAsyncThunk(
     return response.data;
   },
 );
+export const editUsuarios = createAsyncThunk(
+  "usuarios/edit",
+  async ({ id, data }, { isRejectedWithValue }) => {
+    const response = await axios.put(
+      `http://38.22.229.186:2121/usuarios/${id}`,
+      data,
+    );
+    return response.data;
+  },
+);

@@ -1,5 +1,9 @@
-import { elimUsuarios, listarUsuarios } from "../actions/usuariosActions";
-import { addUsuarios } from "../actions/usuariosActions";
+import {
+  elimUsuarios,
+  listarUsuarios,
+  editUsuarios,
+  addUsuarios,
+} from "../actions/usuariosActions";
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
@@ -14,6 +18,7 @@ const usuariosSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
+      //listar
       .addCase(listarUsuarios.pending, (state) => {
         state.loading = true;
       })
@@ -25,6 +30,7 @@ const usuariosSlice = createSlice({
         state.loading = false;
         state.error = action.payload.error;
       })
+      //add
       .addCase(addUsuarios.pending, (state) => {
         state.loading = true;
       })
@@ -36,6 +42,7 @@ const usuariosSlice = createSlice({
         state.loading = false;
         state.error = action.payload.error;
       })
+      //elim
       .addCase(elimUsuarios.pending, (state) => {
         state.loading = true;
       })
@@ -44,6 +51,22 @@ const usuariosSlice = createSlice({
         state.usuario = action.payload;
       })
       .addCase(elimUsuarios.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload.error;
+      })
+      //edit
+      .addCase(editUsuarios.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(editUsuarios.fulfilled, (state, action) => {
+        const index = state.usuarios.findIndex(
+          (usuario) => usuario.usuarioId === action.payload.usuarioId,
+        );
+        if (index !== -1) {
+          state.usuarios[index] = action.payload;
+        }
+      })
+      .addCase(editUsuarios.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload.error;
       });

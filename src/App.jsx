@@ -15,7 +15,7 @@ function App() {
       <Routes>
         <Route path="/" element={<ObtenerUsuarios />} />
         <Route path="/add" element={<AddUsuarios />} />
-        <Route path="/edit" element={<EditUsuarios />} />
+        <Route path="/edit/:id" element={<EditUsuarios />} />
       </Routes>
     </div>
   );

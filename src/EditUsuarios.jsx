@@ -1,14 +1,18 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import {
-  addUsuarios,
+  editUsuarios,
   listarUsuarios,
 } from "./assets/redux/actions/usuariosActions";
+import { useNavigate, useParams } from "react-router-dom";
 
-function FormUsuarios() {
+function EditUsuarios() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { id } = useParams();
+
   const [usuario, setUsuario] = useState({
-    usuarioId: "",
+    usuarioId: id,
     nombre: "",
     apellidoPaterno: "",
     apellidoMaterno: "",
@@ -17,18 +21,30 @@ function FormUsuarios() {
     habilitado: "1",
   });
 
-  async function guardarUsr() {
-    dispatch(addUsuarios(usuario)).then(() => alert("Guardado correcto"));
+  useEffect(() => {
+    cargarUsuario();
+  }, [id]);
+
+  async function cargarUsuario() {
+    const response = await dispatch(listarUsuarios());
+    if (response.type === "usuarios/listar/fulfilled") {
+      const usuarios = response.payload;
+      const foundUser = usuarios.find(
+        (user) => user.usuarioId === parseInt(id) || user.id === parseInt(id),
+      );
+      if (foundUser) {
+        setUsuario(foundUser);
+      }
+    }
+  }
+
+  async function guardarUser() {
+    await dispatch(editUsuarios({ id: usuario.usuarioId, data: usuario })).then(
+      () => alert("Modificación correcta"),
+    );
     console.log(usuario);
     await dispatch(listarUsuarios());
-    setUsuario({
-      nombre: "",
-      apellidoPaterno: "",
-      apellidoMaterno: "",
-      nombreUsuario: "",
-      contraseña: "",
-      habilitado: "1",
-    });
+    navigate("/");
   }
   function change(e) {
     const { name, value } = e.target;
@@ -44,7 +60,12 @@ function FormUsuarios() {
       <h2>Formulario</h2>
       <label>
         Nombre(s):{" "}
-        <input type="text" name="nombre" onChange={(e) => change(e)}></input>
+        <input
+          type="text"
+          name="nombre"
+          value={usuario.nombre}
+          onChange={(e) => change(e)}
+        ></input>
       </label>
       <br />
       <label>
@@ -52,6 +73,7 @@ function FormUsuarios() {
         <input
           type="text"
           name="apellidoPaterno"
+          value={usuario.apellidoPaterno}
           onChange={(e) => change(e)}
         ></input>
       </label>
@@ -61,6 +83,7 @@ function FormUsuarios() {
         <input
           type="text"
           name="apellidoMaterno"
+          value={usuario.apellidoMaterno}
           onChange={(e) => change(e)}
         ></input>
       </label>
@@ -70,6 +93,7 @@ function FormUsuarios() {
         <input
           type="text"
           name="nombreUsuario"
+          value={usuario.nombreUsuario}
           onChange={(e) => change(e)}
         ></input>
       </label>
@@ -78,16 +102,16 @@ function FormUsuarios() {
         Contraseña:{" "}
         <input
           type="password"
-          name="contrasena"
+          name="contraseña"
           onChange={(e) => change(e)}
         ></input>
       </label>
       <br />
-      <button type="button" onClick={guardarUsr}>
-        Añadir Usuario
+      <button type="button" onClick={guardarUser}>
+        Modificar Usuario
       </button>
     </>
   );
 }
 
-export default FormUsuarios;
+export default EditUsuarios;

@@ -27,13 +27,17 @@ function TablaLib({ usuarios }) {
       </button>
     );
   };
-  function editButton(data) {
-    console.log(data);
-    navigate("/edit");
+  function editButton(id) {
+    console.log(id);
+    navigate(`/edit/${id}`);
   }
 
   const modificarButton = (props) => {
-    return <button onClick={() => editButton(props.data)}>Modificar</button>;
+    return (
+      <button onClick={() => editButton(props.data.usuarioId)}>
+        Modificar
+      </button>
+    );
   };
 
   const columns = [
