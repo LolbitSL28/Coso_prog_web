@@ -4,9 +4,10 @@ import {
   addUsuarios,
   listarUsuarios,
 } from "./assets/redux/actions/usuariosActions";
-
+import { useNavigate } from "react-router-dom";
 function AddUsuarios() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [usuario, setUsuario] = useState({
     usuarioId: "",
     nombre: "",
@@ -29,6 +30,7 @@ function AddUsuarios() {
       contraseña: "",
       habilitado: "1",
     });
+    navigate("/usuarios");
   }
   function change(e) {
     const { name, value } = e.target;

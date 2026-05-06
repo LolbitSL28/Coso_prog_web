@@ -17,6 +17,7 @@ function Login() {
       nombreUsuario: "",
       contraseña: "",
     });
+
     navigate("/usuarios");
   }
   function change(e) {
