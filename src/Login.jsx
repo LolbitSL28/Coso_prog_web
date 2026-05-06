@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { actLogin } from "./assets/redux/actions/authActions";
-
+import { useNavigate } from "react-router-dom";
 function Login() {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [usuario, setUsuario] = useState({
     nombreUsuario: "",
@@ -16,6 +17,7 @@ function Login() {
       nombreUsuario: "",
       contraseña: "",
     });
+    navigate("/usuarios");
   }
   function change(e) {
     const { name, value } = e.target;

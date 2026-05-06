@@ -4,6 +4,7 @@ import persistReducer from "redux-persist/es/persistReducer";
 import persistStore from "redux-persist/es/persistStore";
 import storage from "redux-persist/es/storage";
 import { authReducer } from "./slices/authSlice";
+import { setStore } from "../../servicio/storeHelp";
 
 const persistConfig = {
   key: "auth",
@@ -25,4 +26,6 @@ export const store = configureStore({
       },
     }),
 });
+setStore(store);
+
 export const persistor = persistStore(store);
