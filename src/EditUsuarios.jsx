@@ -12,7 +12,7 @@ function EditUsuarios() {
   const { id } = useParams();
 
   const [usuario, setUsuario] = useState({
-    usuarioId: id,
+    usuarioId: "",
     nombre: "",
     apellidoPaterno: "",
     apellidoMaterno: "",
@@ -30,10 +30,18 @@ function EditUsuarios() {
     if (response.type === "usuarios/listar/fulfilled") {
       const usuarios = response.payload;
       const foundUser = usuarios.find(
-        (user) => user.usuarioId === parseInt(id) || user.id === parseInt(id),
+        (user) => user.usuarioId == id || user.id == id,
       );
       if (foundUser) {
-        setUsuario(foundUser);
+        setUsuario({
+          usuarioId: foundUser.usuarioId,
+          nombre: foundUser.nombre,
+          apellidoPaterno: foundUser.apellidoPaterno,
+          apellidoMaterno: foundUser.apellidoMaterno,
+          nombreUsuario: foundUser.nombreUsuario,
+          contraseña: foundUser.contraseña,
+          habilitado: "1",
+        });
       }
     }
   }
@@ -44,7 +52,7 @@ function EditUsuarios() {
     );
     console.log(usuario);
     await dispatch(listarUsuarios());
-    navigate("/");
+    navigate("/usuarios");
   }
   function change(e) {
     const { name, value } = e.target;
@@ -103,6 +111,7 @@ function EditUsuarios() {
         <input
           type="password"
           name="contraseña"
+          value={usuario.contraseña}
           onChange={(e) => change(e)}
         ></input>
       </label>
